@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en" class="h-screen" style="color-scheme: dark; text-align: center; font-family: Poppins, sans;">
+  <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{{ .Name }}</title>
+    <style>
+      body {
+        background-color: #1a1a1a;
+        color: #ffffff;
+        padding: 2rem;
+      }
+      .container {
+        max-width: 800px;
+        margin: 0 auto;
+      }
+      .url-form {
+        margin: 2rem 0;
+      }
+      input[type="text"] {
+        padding: 0.5rem;
+        width: 60%;
+        border: 1px solid #444;
+        background-color: #2a2a2a;
+        color: white;
+        border-radius: 4px;
+      }
+      input[type="submit"] {
+        padding: 0.5rem 1rem;
+        background-color: #4CAF50;
+        color: white;
+        border: none;
+        border-radius: 4px;
+        cursor: pointer;
+        margin-left: 0.5rem;
+      }
+      .result {
+        margin: 2rem 0;
+        padding: 1rem;
+        background-color: #2a2a2a;
+        border-radius: 4px;
+      }
+      a {
+        color: #4CAF50;
+        text-decoration: none;
+      }
+      a:hover {
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <h1>{{ .Name }}</h1>
+      
+      <div class="url-form">
+        <form method="post" action="/shorten">
+          <input type="text" name="url" placeholder="Enter a URL to shorten" required>
+          <input type="submit" value="Shorten">
+        </form>
+      </div>
+
+      {{ if .ShortenedURL }}
+      <div class="result">
+        <p>Original URL: <a href="{{ .OriginalURL }}">{{ .OriginalURL }}</a></p>
+        <p>Shortened URL: <a href="{{ .ShortenedURL }}">{{ .ShortenedURL }}</a></p>
+      </div>
+      {{ end }}
+    </div>
+  </body>
+</html>
