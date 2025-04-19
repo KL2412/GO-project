@@ -5,12 +5,13 @@ import (
 	"math/rand"
 	"net/http"
 	"time"
+
 	"github.com/KL2412/GO-project/config"
 )
 
 type URLShortener struct {
-	urls    map[string]string
-	config  *config.Config
+	urls   map[string]string
+	config *config.Config
 }
 
 func New(cfg *config.Config) *URLShortener {
@@ -30,14 +31,14 @@ func (us *URLShortener) HandleShorten(w http.ResponseWriter, r *http.Request) {
 	if originalURL == "" {
 		http.Error(w, "URL parameter is missing", http.StatusBadRequest)
 		return
-	}	
+	}
 
 	shortKey := generateShortKey()
 	us.urls[shortKey] = originalURL
 
 	shortenedURL := fmt.Sprintf("%s/short/%s", us.config.BaseURL, shortKey)
 
-	fmt.Fprintf(w, shortenedURL)
+	fmt.Fprint(w, shortenedURL)
 }
 
 func (us *URLShortener) HandleRedirect(w http.ResponseWriter, r *http.Request) {
@@ -60,10 +61,10 @@ func generateShortKey() string {
 	const charset = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 	const keyLength = 6
 
-	rand.Seed(time.Now().UnixNano())
+	r := rand.New(rand.NewSource(time.Now().UnixNano()))
 	shortKey := make([]byte, keyLength)
 	for i := range shortKey {
-		shortKey[i] = charset[rand.Intn(len(charset))]
+		shortKey[i] = charset[r.Intn(len(charset))]
 	}
 	return string(shortKey)
-} 
+}
